@@ -98,19 +98,62 @@ async function generateInterviewReport({
   selfDescription,
   jobDescription,
 }) {
-  const prompt = `Generate an interview report for a candidate with the following details:
-  Resume: ${resume},
-  Self Description: ${selfDescription},
-  Job Description: ${jobDescription}`;
+  const prompt = `
+You are an expert interviewer.
+
+Analyze the candidate.
+
+Return ONLY valid JSON in exactly this format.
+
+{
+  "matchScore": number,
+  "technicalQuestion": [
+    {
+      "question": "",
+      "intention": "",
+      "answer": ""
+    }
+  ],
+  "behavioralQuestion": [
+    {
+      "question": "",
+      "intention": "",
+      "answer": ""
+    }
+  ],
+  "skillGaps": [
+    {
+      "skill": "",
+      "severity": "low | medium | high"
+    }
+  ],
+  "preparationPlan": [
+    {
+      "day": 1,
+      "focus": "",
+      "tasks": []
+    }
+  ]
+}
+
+Resume:
+${resume}
+
+Self Description:
+${selfDescription}
+
+Job Description:
+${jobDescription}
+`;
   const response = await ai.models.generateContent({
-    model: "gemini-3.1-flash-lite",
+    model: "gemini-3-flash-preview",
     contents: prompt,
     config: {
       responseMimeType: "application/json",
       responseSchema: zodToJsonSchema(interviewReportSchema),
     },
   });
-  console.log(JSON.parse(response.text));
+  return JSON.parse(response.text);
 }
 
 module.exports = generateInterviewReport;
