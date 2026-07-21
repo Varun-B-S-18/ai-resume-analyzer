@@ -1,0 +1,544 @@
+// ---------------------------------------------
+// Tokens
+// ---------------------------------------------
+$bg-page: #05070d;
+$bg-card: #0c1018;
+$bg-panel-inset: #10141d;
+$border-subtle: #1e2431;
+$border-card: #232938;
+
+$text-primary: #f5f6fa;
+$text-secondary: #9aa1b1;
+$text-placeholder: #5c6274;
+
+$pink: #ec1560;
+$pink-bright: #ff3d78;
+$purple: #9b3ff2;
+
+$severity-high: #ff4d6d;
+$severity-medium: #f5a524;
+$severity-low: #4ade80;
+
+$radius-lg: 20px;
+$radius-md: 12px;
+$radius-sm: 8px;
+
+$font-stack:
+  -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+  sans-serif;
+
+// ---------------------------------------------
+// Loading screen
+// ---------------------------------------------
+.loading-screen {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $bg-page;
+  color: $text-primary;
+  font-family: $font-stack;
+
+  h1 {
+    font-size: 18px;
+    font-weight: 700;
+  }
+}
+
+// ---------------------------------------------
+// Page shell
+// ---------------------------------------------
+.interview-page {
+  height: 100vh;
+  height: 100dvh;
+  width: 100%;
+  display: flex;
+  background: $bg-page;
+  font-family: $font-stack;
+  color: $text-primary;
+  padding: clamp(14px, 3vh, 40px) clamp(14px, 3vw, 40px);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.interview-layout {
+  flex: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  background: $bg-card;
+  border: 1px solid $border-card;
+  border-radius: $radius-lg;
+  display: grid;
+  grid-template-columns: 240px 1px 1fr 1px 280px;
+  min-height: 0;
+  overflow: hidden;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr auto auto;
+    height: auto;
+    max-height: 100%;
+
+    .interview-divider {
+      display: none;
+    }
+  }
+}
+
+.interview-divider {
+  background: $border-subtle;
+  width: 1px;
+  height: 100%;
+}
+
+// ---------------------------------------------
+// Left nav
+// ---------------------------------------------
+.interview-nav {
+  padding: 28px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+  min-width: 0;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+
+  .nav-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    overflow-y: auto;
+    min-height: 0;
+  }
+
+  &__label {
+    margin: 0 0 10px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: $text-secondary;
+  }
+
+  &__item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+    background: transparent;
+    border: none;
+    color: $text-secondary;
+    font-family: inherit;
+    font-size: 14.5px;
+    font-weight: 600;
+    padding: 10px 12px;
+    border-radius: $radius-sm;
+    cursor: pointer;
+    transition:
+      background 0.15s ease,
+      color 0.15s ease;
+
+    &:hover {
+      background: rgba($pink, 0.08);
+      color: $text-primary;
+    }
+
+    &--active {
+      color: $text-primary;
+      background: rgba($pink, 0.14);
+      box-shadow: inset 3px 0 0 $pink;
+    }
+  }
+
+  &__icon {
+    display: inline-flex;
+    flex: 0 0 auto;
+  }
+}
+
+// Reusable buttons (Download Resume, etc.)
+.button {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  border: none;
+  border-radius: $radius-md;
+  padding: 12px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.15s ease;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.primary-button {
+  background: linear-gradient(135deg, $pink, $purple);
+  color: #fff;
+}
+
+// ---------------------------------------------
+// Main content
+// ---------------------------------------------
+.interview-content {
+  padding: 0 32px 28px;
+  overflow-y: auto;
+  overflow-anchor: none;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+
+  // Themed scrollbar — matches the card background instead of the OS default
+  scrollbar-width: thin;
+  scrollbar-color: $border-card $bg-card;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $bg-card;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $border-card;
+    border-radius: 999px;
+
+    &:hover {
+      background-color: $border-subtle;
+    }
+  }
+}
+
+.content-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 18px;
+  padding: 28px 0 18px;
+  box-sizing: border-box;
+  position: sticky;
+  top: 0;
+  background: $bg-card;
+  z-index: 2;
+
+  h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+  }
+
+  &__count {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: $text-secondary;
+    background: $bg-panel-inset;
+    border: 1px solid $border-subtle;
+    border-radius: 999px;
+    padding: 4px 10px;
+  }
+}
+
+// Question cards (technical + behavioral)
+.q-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.q-card {
+  background: $bg-panel-inset;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-md;
+  overflow: hidden;
+  scroll-margin-top: 12px;
+  transition: border-color 0.15s ease;
+
+  &__header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: transparent;
+    border: none;
+    color: $text-primary;
+    text-align: left;
+    padding: 16px 18px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  &__index {
+    flex: 0 0 auto;
+    padding: 3px 9px;
+    border-radius: $radius-sm;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: $pink;
+    background: rgba($pink, 0.12);
+  }
+
+  &__question {
+    flex: 1;
+    margin: 0;
+    font-size: 14.5px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  &__chevron {
+    flex: 0 0 auto;
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    color: $text-secondary;
+    transition: transform 0.15s ease;
+
+    &--open {
+      transform: rotate(180deg);
+      color: $pink;
+    }
+  }
+
+  &__body {
+    padding: 0 18px 18px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  &__section {
+    p {
+      margin: 4px 0 0;
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: $text-secondary;
+    }
+  }
+
+  &__tag {
+    display: inline-block;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: $radius-sm;
+
+    &--intention {
+      color: $purple;
+      background: rgba($purple, 0.12);
+    }
+
+    &--answer {
+      color: $pink-bright;
+      background: rgba($pink, 0.12);
+    }
+  }
+}
+
+// Roadmap
+.roadmap-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.roadmap-day {
+  background: $bg-panel-inset;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-md;
+  padding: 18px;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 10px;
+  }
+
+  &__badge {
+    flex: 0 0 auto;
+    padding: 4px 10px;
+    border-radius: $radius-sm;
+    font-size: 12px;
+    font-weight: 700;
+    color: $pink;
+    background: rgba($pink, 0.1);
+  }
+
+  &__focus {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  &__tasks {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13.5px;
+      line-height: 1.5;
+      color: $text-secondary;
+    }
+  }
+
+  &__bullet {
+    flex: 0 0 auto;
+    width: 6px;
+    height: 6px;
+    margin-top: 6px;
+    border-radius: 50%;
+    background: $pink;
+  }
+}
+
+// ---------------------------------------------
+// Right sidebar
+// ---------------------------------------------
+.interview-sidebar {
+  padding: 28px 24px;
+  min-width: 0;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-divider {
+  height: 1px;
+  background: $border-subtle;
+  margin: 22px 0;
+  flex: 0 0 auto;
+}
+
+.match-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: 0 0 auto;
+
+  &__label {
+    margin: 0 0 14px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: $text-secondary;
+  }
+
+  &__ring {
+    width: 110px;
+    height: 110px;
+    aspect-ratio: 1 / 1;
+    flex: 0 0 auto;
+    box-sizing: border-box;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    border: 6px solid $border-subtle;
+
+    &.score--high {
+      border-color: $severity-low;
+    }
+    &.score--mid {
+      border-color: $severity-medium;
+    }
+    &.score--low {
+      border-color: $severity-high;
+    }
+  }
+
+  &__value {
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1;
+    color: $text-primary;
+  }
+
+  &__pct {
+    font-size: 14px;
+    line-height: 1;
+    color: $text-secondary;
+    margin-left: 2px;
+    align-self: center;
+  }
+
+  &__sub {
+    margin: 14px 0 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: $text-secondary;
+  }
+}
+
+.skill-gaps {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+
+  &__label {
+    margin: 0 0 14px;
+    font-size: 15px;
+    font-weight: 700;
+    flex: 0 0 auto;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+.skill-tag {
+  padding: 12px 14px;
+  border-radius: $radius-md;
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.35;
+  border: 1px solid $border-subtle;
+  background: $bg-panel-inset;
+  color: $text-primary;
+
+  &--high {
+    border-color: rgba($severity-high, 0.4);
+    color: $severity-high;
+    background: rgba($severity-high, 0.1);
+  }
+
+  &--medium {
+    border-color: rgba($severity-medium, 0.4);
+    color: $severity-medium;
+    background: rgba($severity-medium, 0.1);
+  }
+
+  &--low {
+    border-color: rgba($severity-low, 0.4);
+    color: $severity-low;
+    background: rgba($severity-low, 0.1);
+  }
+}

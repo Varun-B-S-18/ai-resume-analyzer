@@ -1,0 +1,142 @@
+{
+  "_id": {
+    "$oid": "6a5c60b02506310e85c31d67"
+  },
+  "matchScore": 85,
+  "technicalQuestions": [
+    {
+      "question": "In your MERN projects, how did you handle state management, and when would you choose Context API over Redux?",
+      "intention": "To evaluate the depth of React knowledge and architectural decision-making skills.",
+      "answer": "For smaller to medium projects like my Expense Tracker, I used React Context API to avoid prop drilling. However, for applications with complex global state, like my AI Resume Analyzer which handles multiple user inputs and API states, I would transition to Redux Toolkit or Zustand. The choice depends on the scale of the state and the frequency of updates."
+    },
+    {
+      "question": "Explain the process of securing your REST APIs in your projects. Why is JWT preferred over session-based authentication?",
+      "intention": "To assess understanding of security best practices and API design.",
+      "answer": "I implement JWT by storing the token in an HttpOnly cookie to prevent XSS. JWT is stateless, which is ideal for the scalable, distributed microservice architectures common in MERN, whereas sessions require server-side memory for storage."
+    },
+    {
+      "question": "How do you optimize MongoDB queries for large datasets in your applications?",
+      "intention": "To test database design and performance optimization skills.",
+      "answer": "I focus on indexing fields that are frequently queried. In my projects, I use Mongoose to define schemas and utilize .explain() to analyze query execution plans, ensuring we avoid collection scans and utilize covered queries wherever possible."
+    }
+  ],
+  "behavioralQuestions": [
+    {
+      "question": "Tell me about a time you encountered a difficult bug in your MERN project. How did you resolve it?",
+      "intention": "To evaluate problem-solving methodology and persistence.",
+      "answer": "While building my AI Resume Analyzer, I faced a race condition where the AI API response was inconsistent. I isolated the issue using debugger statements and network logs, refactored the async/await flow, and implemented a loading state with proper error handling. This taught me the importance of defensive programming."
+    },
+    {
+      "question": "You mentioned system design as an area for improvement. How would you approach designing a scalable notification system for a MERN app?",
+      "intention": "To test the candidate's self-awareness and ability to tackle high-level design challenges.",
+      "answer": "I would start by identifying requirements—real-time updates vs. asynchronous delivery. I would suggest using WebSockets (Socket.io) for real-time, and a message queue like Redis/RabbitMQ to handle background processing so the user isn't blocked by slow service responses."
+    }
+  ],
+  "skillGaps": [
+    {
+      "skill": "System Design",
+      "severity": "high"
+    },
+    {
+      "skill": "Unit Testing (Jest/Vitest)",
+      "severity": "medium"
+    },
+    {
+      "skill": "AWS/Cloud Deployment",
+      "severity": "medium"
+    },
+    {
+      "skill": "TypeScript",
+      "severity": "low"
+    }
+  ],
+  "preparationPlan": [
+    {
+      "day": 1,
+      "focus": "System Design Fundamentals",
+      "tasks": [
+        "Learn about Load Balancers, Caching, and Database Sharding.",
+        "Design a URL Shortener or Notification system on paper."
+      ],
+      "_id": {
+        "$oid": "6a5c60b02506310e85c31d68"
+      }
+    },
+    {
+      "day": 2,
+      "focus": "Unit Testing",
+      "tasks": [
+        "Read Jest documentation.",
+        "Add at least 5 unit tests to your Expense Tracker project for API controllers."
+      ],
+      "_id": {
+        "$oid": "6a5c60b02506310e85c31d69"
+      }
+    },
+    {
+      "day": 3,
+      "focus": "Cloud Deployment",
+      "tasks": [
+        "Deploy your MERN project to AWS Elastic Beanstalk or Vercel.",
+        "Learn the basics of AWS S3 for storing user images."
+      ],
+      "_id": {
+        "$oid": "6a5c60b02506310e85c31d6a"
+      }
+    },
+    {
+      "day": 4,
+      "focus": "TypeScript Migration",
+      "tasks": [
+        "Convert a small module in your project from JavaScript to TypeScript.",
+        "Learn how to define Interfaces for MongoDB models."
+      ],
+      "_id": {
+        "$oid": "6a5c60b02506310e85c31d6b"
+      }
+    },
+    {
+      "day": 5,
+      "focus": "Advanced MongoDB",
+      "tasks": [
+        "Study MongoDB Aggregation pipelines and Indexing strategies.",
+        "Optimize one slow query from your past projects."
+      ],
+      "_id": {
+        "$oid": "6a5c60b02506310e85c31d6c"
+      }
+    },
+    {
+      "day": 6,
+      "focus": "Behavioral & Mock Interview",
+      "tasks": [
+        "Prepare STAR method responses for 5 common behavioral questions.",
+        "Perform a mock interview recording."
+      ],
+      "_id": {
+        "$oid": "6a5c60b02506310e85c31d6d"
+      }
+    },
+    {
+      "day": 7,
+      "focus": "Review & Final Polish",
+      "tasks": [
+        "Review your GitHub repositories to ensure clean README files.",
+        "Refresh on LeetCode patterns like Sliding Window and Two Pointers."
+      ],
+      "_id": {
+        "$oid": "6a5c60b02506310e85c31d6e"
+      }
+    }
+  ],
+  "user": {
+    "$oid": "6a53938be6d2ba37826b18f3"
+  },
+  "createdAt": {
+    "$date": "2026-07-19T05:29:20.088Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-19T05:29:20.088Z"
+  },
+  "__v": 0
+}

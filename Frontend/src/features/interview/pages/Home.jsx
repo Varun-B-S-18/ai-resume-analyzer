@@ -1,5 +1,7 @@
 import React, { useState, useRef } from "react";
 import "../style/home.scss";
+import { useInterview } from "../hooks/useInterview.js";
+import { useNavigate } from "react-router";
 
 const MAX_JD_CHARS = 2000;
 
@@ -10,6 +12,9 @@ export default function Home() {
   const [resumeFile, setResumeFile] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef(null);
+  const navigate = useNavigate();
+
+  const { loading, generateReport, reports } = useInterview();
 
   const handleJobDescriptionChange = (e) => {
     const value = e.target.value.slice(0, MAX_JD_CHARS);
@@ -33,9 +38,35 @@ export default function Home() {
     handleFileSelect(e.dataTransfer.files?.[0]);
   };
 
-  const handleGenerate = () => {
-    console.log({ jobDescription, resumeText, selfDescription, resumeFile });
+  const [errorMsg, setErrorMsg] = useState(null);
+
+  const handleGenerate = async () => {
+    setErrorMsg(null);
+    const data = await generateReport({
+      jobDescription,
+      selfDescription,
+      resumeFile,
+    });
+
+    console.log("Generated report data:", data); // TEMP: see actual shape
+
+    if (data?._id) {
+      navigate(`/interview/${data._id}`);
+    } else {
+      setErrorMsg(
+        "Something went wrong generating your report. Please try again.",
+      );
+    }
   };
+
+  if (loading) {
+    return (
+      <main className="loading-screen">
+        <h1>Loading your interview plan...</h1>
+      </main>
+    );
+  }
+  console.log("Reports:", reports);
 
   return (
     <div className="interview-plan-page">
@@ -48,7 +79,6 @@ export default function Home() {
           perfect interview strategy.
         </p>
       </header>
-
       <div className="interview-plan-card">
         <div className="interview-plan-card__body">
           {/* Left column */}
@@ -93,7 +123,7 @@ export default function Home() {
             </div>
 
             <div className="field-label">
-              Select Resume <span className="optional">(Optional)</span>
+              Upload Resume<span className="optional">[BEST RESULTS]</span>
             </div>
 
             <label
@@ -123,11 +153,11 @@ export default function Home() {
               <span className="dropzone__subtitle">PDF or DOCX (Max 5MB)</span>
             </label>
 
-            {/* <div className="or-divider">
+            <div className="or-divider">
               <span />
               <p>OR</p>
               <span />
-            </div> */}
+            </div>
 
             {/* <textarea
               className="resume-textarea"
@@ -137,7 +167,7 @@ export default function Home() {
             /> */}
 
             <div className="field-label field-label--section">
-              Share Self-Description
+              Quick Self-Description
             </div>
             <textarea
               className="self-description-textarea"
@@ -151,21 +181,55 @@ export default function Home() {
                 <SparkIcon />
               </span>
               <p>
-                Better matches = tailored questions, custom roadmap, and smart
-                feedback.
+                Either a Resume or a Self Description is required to required to
+                generate a personalized interview strategy. The more information
+                you provide, the better the AI can tailor the questions and
+                guidance to your profile.
               </p>
             </div>
           </section>
         </div>
 
         <div className="interview-plan-card__footer">
-          <p className="ats-note">AI Recommendation available in 20+ ATS</p>
+          <p className="ats-note">AI-Powered Strategy Generation-Approx 30s</p>
+          {errorMsg && <p className="error-text">{errorMsg}</p>}
           <button className="generate-btn" onClick={handleGenerate}>
             <SparkleClusterIcon />
             Generate My Interview Strategy
           </button>
         </div>
       </div>
+      {/* Recent Reports List */}
+      {reports.length > 0 && (
+        <section className="recent-reports">
+          <h2>My Recent Interview Plans</h2>
+          <ul className="reports-list">
+            {reports.map((report) => (
+              <li
+                key={report._id}
+                className="report-item"
+                onClick={() => navigate(`/interview/${report._id}`)}
+              >
+                <h3>{report.title || "Untitled Position"}</h3>
+                <p className="report-meta">
+                  Generated on {new Date(report.createdAt).toLocaleDateString()}
+                </p>
+                <p
+                  className={`match-score ${report.matchScore >= 80 ? "score--high" : report.matchScore >= 60 ? "score--mid" : "score--low"}`}
+                >
+                  Match Score: {report.matchScore}%
+                </p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+      {/* 
+      <footer className="page-footer">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Help Center</a>
+      </footer> */}
     </div>
   );
 }

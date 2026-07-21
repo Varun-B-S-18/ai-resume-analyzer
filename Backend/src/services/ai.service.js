@@ -91,6 +91,11 @@ const interviewReportSchema = z.object({
     .describe(
       "A day-wise preparation plan for the candidate to improve their skills and prepare for the interview.",
     ),
+  title: z
+    .string()
+    .describe(
+      "The title of the job for which the interview report is generated.",
+    ),
 });
 
 async function generateInterviewReport({
@@ -112,8 +117,8 @@ Your task is to analyze the provided Resume and Job Description (JD) to generate
 Based on the candidate's background, resume, self-description, and the Job Description (JD), generate a JSON object that matches the schema exactly.
 
 1. Calculate the candidate's 'matchScore' based on how well their skills, projects, education, and experience align with the JD.
-2. Generate personalized 'technicalQuestions' that focus on the candidate's skills, projects, technologies used, and any missing requirements from the JD.
-3. Generate personalized 'behavioralQuestions' based on the candidate's background, strengths, weaknesses, and expected interview scenarios.
+2. Generate exactly 10 to 15 personalized 'technicalQuestions' that focus on the candidate's skills, projects, technologies used, and any missing requirements from the JD. Cover a range of difficulty levels (easy, medium, hard) and a range of topics — do not repeat the same underlying concept across multiple questions.
+3. Generate exactly 8 to 10 personalized 'behavioralQuestions' based on the candidate's background, strengths, weaknesses, and expected interview scenarios. Cover distinct situations (teamwork, conflict, leadership, failure, ownership, etc.) — do not repeat similar scenarios.
 4. For EVERY technical and behavioral question, also generate:
    - The interviewer's intention (what skill or knowledge is being evaluated).
    - A detailed, interview-ready sample answer tailored to the candidate's profile.
@@ -132,6 +137,8 @@ Based on the candidate's background, resume, self-description, and the Job Descr
   "behavioralQuestions",
   "skillGaps",
   "preparationPlan".
+- 'technicalQuestions' MUST be an array containing between 10 and 15 question objects — never fewer than 10.
+- 'behavioralQuestions' MUST be an array containing between 8 and 10 question objects — never fewer than 8.
 - For every technical question include:
   - question
   - difficulty
