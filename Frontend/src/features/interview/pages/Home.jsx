@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "../style/home.scss";
 import { useInterview } from "../hooks/useInterview.js";
 import { useNavigate } from "react-router";
@@ -14,7 +14,11 @@ export default function Home() {
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
 
-  const { loading, generateReport, reports } = useInterview();
+  const { loading, generateReport, reports, getAllReports } = useInterview();
+
+  useEffect(() => {
+    getAllReports();
+  }, []);
 
   const handleJobDescriptionChange = (e) => {
     const value = e.target.value.slice(0, MAX_JD_CHARS);
@@ -200,7 +204,7 @@ export default function Home() {
         </div>
       </div>
       {/* Recent Reports List */}
-      {reports.length > 0 && (
+      {reports?.length > 0 && (
         <section className="recent-reports">
           <h2>My Recent Interview Plans</h2>
           <ul className="reports-list">
@@ -224,12 +228,11 @@ export default function Home() {
           </ul>
         </section>
       )}
-      {/* 
       <footer className="page-footer">
         <a href="#">Privacy Policy</a>
         <a href="#">Terms of Service</a>
         <a href="#">Help Center</a>
-      </footer> */}
+      </footer>
     </div>
   );
 }

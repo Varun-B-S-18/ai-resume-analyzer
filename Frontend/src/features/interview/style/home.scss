@@ -15,6 +15,10 @@ $pink: #ec1560;
 $pink-bright: #ff3d78;
 $purple: #9b3ff2;
 
+$severity-high: #ff4d6d;
+$severity-medium: #f5a524;
+$severity-low: #4ade80;
+
 $radius-lg: 20px;
 $radius-md: 12px;
 $radius-sm: 8px;
@@ -31,14 +35,14 @@ $font-stack:
 }
 
 // ---------------------------------------------
-// Page shell — fits one screen, no scrolling
+// Page shell
 // ---------------------------------------------
 // If this component owns the whole page, also set on a global stylesheet:
-//   html, body, #root { height: 100%; margin: 0; overflow: hidden; }
+//   html, body, #root { height: 100%; margin: 0; }
 .interview-plan-page {
-  height: 100vh;
-  height: 100dvh; // accounts for mobile browser chrome
-  width: 100vw;
+  min-height: 100vh;
+  min-height: 100dvh; // accounts for mobile browser chrome
+  width: 100%;
   display: flex;
   flex-direction: column;
   background: $bg-page;
@@ -46,14 +50,13 @@ $font-stack:
   color: $text-primary;
   padding: clamp(14px, 2.4vh, 32px) clamp(14px, 2.5vw, 28px);
   box-sizing: border-box;
-  overflow: hidden;
 }
 
 .interview-plan-header {
   flex: 0 0 auto;
   text-align: center;
   max-width: 720px;
-  margin: 0 auto clamp(10px, 2vh, 24px);
+  margin: 0 auto clamp(16px, 3vh, 30px);
 
   h1 {
     font-size: clamp(18px, 2.6vw + 0.5vh, 34px);
@@ -79,10 +82,10 @@ $font-stack:
 // Card — takes remaining space, never overflows
 // ---------------------------------------------
 .interview-plan-card {
-  flex: 1 1 auto;
-  min-height: 0;
+  flex: 0 0 auto;
+  min-height: clamp(440px, 70vh, 760px);
   width: 100%;
-  max-width: 1160px;
+  max-width: 800px;
   margin: 0 auto;
   background: $bg-card;
   border: 1px solid $border-card;
@@ -247,7 +250,7 @@ $font-stack:
   justify-content: center;
   gap: clamp(4px, 0.8vh, 10px);
   text-align: center;
-  padding: clamp(10px, 2vh, 36px) 16px;
+  padding: clamp(8px, 1.4vh, 22px) 16px;
   border: 1.5px dashed $border-subtle;
   border-radius: $radius-md;
   background: $bg-panel-inset;
@@ -399,6 +402,12 @@ $font-stack:
   white-space: nowrap;
 }
 
+.error-text {
+  margin: 0;
+  font-size: clamp(10px, 0.5vw + 0.4vh, 13px);
+  color: $severity-high;
+}
+
 .generate-btn {
   flex: 0 0 auto;
   display: inline-flex;
@@ -431,5 +440,114 @@ $font-stack:
     width: 16px;
     height: 16px;
     flex: 0 0 auto;
+  }
+}
+
+// ---------------------------------------------
+// Recent reports list
+// ---------------------------------------------
+.recent-reports {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 1160px;
+  margin: clamp(16px, 3vh, 32px) auto 0;
+
+  h2 {
+    margin: 0 0 clamp(10px, 1.6vh, 18px);
+    font-size: clamp(14px, 0.9vw + 0.6vh, 19px);
+    font-weight: 800;
+  }
+}
+
+.reports-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.report-item {
+  background: $bg-card;
+  border: 1px solid $border-card;
+  border-radius: $radius-md;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    transform 0.15s ease;
+
+  &:hover {
+    border-color: $pink;
+    transform: translateY(-2px);
+  }
+
+  h3 {
+    margin: 0 0 4px;
+    font-size: 14.5px;
+    font-weight: 700;
+    color: $text-primary;
+  }
+}
+
+.report-meta {
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: $text-secondary;
+}
+
+.match-score {
+  display: inline-block;
+  margin: 0;
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 999px;
+  color: $text-secondary;
+  background: $bg-panel-inset;
+  border: 1px solid $border-subtle;
+
+  &.score--high {
+    color: $severity-low;
+    background: rgba($severity-low, 0.1);
+    border-color: rgba($severity-low, 0.4);
+  }
+
+  &.score--mid {
+    color: $severity-medium;
+    background: rgba($severity-medium, 0.1);
+    border-color: rgba($severity-medium, 0.4);
+  }
+
+  &.score--low {
+    color: $severity-high;
+    background: rgba($severity-high, 0.1);
+    border-color: rgba($severity-high, 0.4);
+  }
+}
+
+// ---------------------------------------------
+// Page footer
+// ---------------------------------------------
+.page-footer {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: clamp(16px, 2.5vw, 32px);
+  margin-top: clamp(20px, 4vh, 40px);
+  padding-top: clamp(12px, 2vh, 20px);
+  border-top: 1px solid $border-subtle;
+
+  a {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: $text-secondary;
+    text-decoration: none;
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: $text-primary;
+    }
   }
 }

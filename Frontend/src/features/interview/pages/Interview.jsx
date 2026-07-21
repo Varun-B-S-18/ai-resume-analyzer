@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "../style/interview.scss";
 import { useParams } from "react-router";
 import { useInterview } from "../hooks/useInterview.js";
@@ -100,9 +100,7 @@ const QuestionCard = ({ item, index }) => {
             <p>{item.intention}</p>
           </div>
           <div className="q-card__section">
-            <span className="q-card__tag q-card__tag--answer">
-              Model Answer
-            </span>
+            <span className="q-card__tag q-card__tag--answer">Answer</span>
             <p>{item.answer}</p>
           </div>
         </div>
@@ -132,6 +130,7 @@ const RoadMapDay = ({ day }) => (
 const Interview = () => {
   const [activeNav, setActiveNav] = useState("technical");
   const { interviewId } = useParams();
+  const contentRef = useRef(null);
 
   // Use the shared hook instead of local fetch logic.
   // getReportById already handles loading state and setting `report`
@@ -143,6 +142,14 @@ const Interview = () => {
       getReportById(interviewId);
     }
   }, [interviewId]);
+
+  // Force scroll back to the top whenever the active section changes,
+  // and also once the report finishes loading (the ref isn't attached
+  // to the DOM yet while the loading screen is shown, so this needs to
+  // re-run when `report` becomes available too).
+  useEffect(() => {
+    contentRef.current?.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [activeNav, report]);
 
   const handleDownloadResume = async () => {
     try {
@@ -215,7 +222,7 @@ const Interview = () => {
         <div className="interview-divider" />
 
         {/* ── Center Content ── */}
-        <main className="interview-content">
+        <main className="interview-content" ref={contentRef}>
           {activeNav === "technical" && (
             <section>
               <div className="content-header">
