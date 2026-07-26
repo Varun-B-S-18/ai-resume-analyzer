@@ -6,7 +6,7 @@ const {
   selfDescription,
   jobDescription,
 } = require("./src/services/temp");
-const generateInterviewReport = require("./src/services/ai.service");
+const { generateInterviewReport } = require("./src/services/ai.service");
 
 connectToDB();
 generateInterviewReport({ resume, selfDescription, jobDescription });

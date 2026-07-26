@@ -1,5 +1,8 @@
 const pdfParse = require("pdf-parse");
-const generateInterviewReport = require("../services/ai.service");
+const {
+  generateInterviewReport,
+  generateResumePdf,
+} = require("../services/ai.service");
 const interviewReportModel = require("../models/interviewReport.model");
 
 /**
@@ -40,6 +43,13 @@ async function getInterviewReportByIdController(req, res) {
   if (!interviewReport) {
     return res.status(404).json({ message: "Interview Report not found" });
   }
+
+  if (interviewReport.user.toString() !== req.user.id) {
+    return res
+      .status(403)
+      .json({ message: "Not authorized to view this report" });
+  }
+
   res.status(200).json({
     message: "Interview Report fetched successfully",
     interviewReport,
@@ -56,14 +66,43 @@ async function getAllInterviewReportsController(req, res) {
     .select(
       "-resume -selfDescription -jobDescription -__v -technicalQuestions -behavioralQuestions -skillGaps -preparationPlan",
     );
+
+  res.set("Cache-Control", "no-store");
+
   res.status(200).json({
     message: "Interview Reports fetched successfully",
     interviewReport,
   });
 }
 
+/**
+ * @description Controller to generate resume pdf based on user self description, resume pdf and job description.
+ */
+async function generateResumePdfController(req, res) {
+  const { interviewReportId } = req.params;
+
+  const interviewReport =
+    await interviewReportModel.findById(interviewReportId);
+  if (!interviewReport) {
+    return res.status(404).json({ message: "Interview Report not found" });
+  }
+
+  const { resume, selfDescription, jobDescription } = interviewReport;
+
+  const pdfBuffer = await generateResumePdf({
+    resume,
+    selfDescription,
+    jobDescription,
+  });
+  res.set({
+    "Content-Type": "application/pdf",
+    "Content-Disposition": `attachment; filename=resume_${interviewReportId}.pdf`,
+  });
+  res.send(pdfBuffer);
+}
 module.exports = {
   generateInterviewReportController,
   getInterviewReportByIdController,
   getAllInterviewReportsController,
+  generateResumePdfController,
 };
