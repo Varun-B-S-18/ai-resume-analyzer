@@ -135,7 +135,7 @@ const Interview = () => {
   // Use the shared hook instead of local fetch logic.
   // getReportById already handles loading state and setting `report`
   // internally, and reads the correct `interviewReport` key from the backend.
-  const { report, loading, getReportById } = useInterview();
+  const { report, loading, getReportById, getResumePdf } = useInterview();
 
   useEffect(() => {
     if (interviewId) {
@@ -151,24 +151,6 @@ const Interview = () => {
     contentRef.current?.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, [activeNav, report]);
 
-  const handleDownloadResume = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:3000/api/interview/report/${interviewId}/resume`,
-        { responseType: "blob", withCredentials: true },
-      );
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "resume.pdf");
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-    } catch (err) {
-      console.error("Error downloading resume:", err);
-    }
-  };
-
   if (loading || !report) {
     return (
       <main className="loading-screen">
@@ -183,6 +165,8 @@ const Interview = () => {
       : report.matchScore >= 60
         ? "score--mid"
         : "score--low";
+
+  console.log(interviewId, "interviewId");
 
   return (
     <div className="interview-page">
@@ -203,7 +187,7 @@ const Interview = () => {
             ))}
           </div>
           <button
-            onClick={handleDownloadResume}
+            onClick={() => getResumePdf(interviewId)}
             className="button primary-button"
           >
             <svg
